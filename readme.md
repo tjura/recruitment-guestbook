@@ -2,6 +2,8 @@
 
 * Create comments
 * Show comments (pagination)
+* Default pagination (10)
+* Database migrations: `./app/migrations/` (automated)
 
 ## Start project (development)
 
@@ -16,10 +18,6 @@ http://localhost
 ```bash
 ./stop.sh
 ```
-
-## Database structure
-
-look into ./app/migrations/
 
 ## Bash in PHP container
 

@@ -5,15 +5,12 @@ namespace app\controllers;
 use app\models\Post;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
 use yii\web\Controller;
 
 class SiteController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
+
+    public function behaviors(): array
     {
         return [
             'access' => [
@@ -26,28 +23,6 @@ class SiteController extends Controller
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'create' => ['post'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
         ];
     }
 
@@ -56,11 +31,11 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $model = new Post();
 
-        $this->create($model);
+        $this->create(post: $model);
 
         $dataProvider = new ActiveDataProvider(
             [
@@ -75,6 +50,11 @@ class SiteController extends Controller
         ]);
     }
 
+    /**
+     * Post creation handler
+     * @param Post $post
+     * @return void
+     */
     private function create(Post &$post): void
     {
         if ($post->load(\Yii::$app->request->post()) && $post->save()) {

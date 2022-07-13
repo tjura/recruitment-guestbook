@@ -10,21 +10,21 @@ class m220713_065042_create_post_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function safeUp(): void
     {
-        $this->createTable('{{%post}}', [
+        $this->createTable(table: '{{%post}}', columns: [
             'id' => $this->primaryKey()->unsigned(),
             'username' => $this->string()->notNull(),
-            'content' => $this->string(512)->notNull(),
-            'created_at' => $this->dateTime()->defaultExpression('NOW()'),
+            'content' => $this->string(length: 512)->notNull(),
+            'created_at' => $this->dateTime()->defaultExpression(default: 'NOW()'),
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): void
     {
-        $this->dropTable('{{%post}}');
+        $this->dropTable(table: '{{%post}}');
     }
 }
