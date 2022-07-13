@@ -17,6 +17,10 @@ http://localhost
 ./stop.sh
 ```
 
+## Database structure
+
+look into ./app/migrations/
+
 ## Bash in PHP container
 
 ```bash
