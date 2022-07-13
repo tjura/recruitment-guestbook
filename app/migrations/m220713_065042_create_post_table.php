@@ -16,7 +16,7 @@ class m220713_065042_create_post_table extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'username' => $this->string()->notNull(),
             'content' => $this->string(512)->notNull(),
-            'created_at' => $this->dateTime()->defaultValue('NOW()'),
+            'created_at' => $this->dateTime()->defaultExpression('NOW()'),
         ]);
     }
 

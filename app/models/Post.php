@@ -12,6 +12,7 @@ use yii\db\ActiveRecord;
  * @property int $id
  * @property string $username
  * @property string $content
+ * @property string $created_at
  */
 class Post extends ActiveRecord
 {
