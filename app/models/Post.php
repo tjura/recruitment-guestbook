@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[Entity]
 #[Table(name: 'post')]
@@ -15,9 +16,11 @@ class Post
 {
     #[Id()]
     #[GeneratedValue()]
+    #[Required()]
     #[Column(type: Types::INTEGER, unique: true)]
     private int $id;
     #[Column(length: 255)]
+    #[Required()]
     private string $username;
     #[Column(length: 255)]
     private string $content;
