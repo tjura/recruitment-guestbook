@@ -1,44 +1,47 @@
 <?php
-
 /**
- * @var yii\web\View $this
- * @var ActiveDataProvider $dataProvider
- * @var Post $model
+ * @var Post[] $models
+ * @var Paginator $paginator
  */
 
+use app\database\Paginator;
 use app\models\Post;
-use yii\data\ActiveDataProvider;
-use yii\widgets\ListView;
-use yii\widgets\Pjax;
-
-$this->title = 'Guestbook';
+use app\widgets\Pager;
 
 ?>
 
-<?php
-Pjax::begin(['id' => 'grid']) ?>
+<main>
+    <div class="px-4 py-5 my-5 text-center">
+        <h1 class="display-5 fw-bold">Guestbook</h1>
+        <div class="col-lg-6 mx-auto">
 
-<div class="site-index">
-
-    <div class="jumbotron text-center bg-transparent">
-        <h1 class="display-4">Guestbook!</h1>
-        <p class="lead"></p>
-    </div>
-
-    <div class="body-content">
-        <div class="row">
-            <div class="col-12">
-                <?= $this->render('partial/_form', ['model' => $model]) ?>
-                <hr/>
-                <?= ListView::widget([
-                    'dataProvider' => $dataProvider,
-                    'itemView' => 'partial/_post',
-                    'emptyText' => Yii::t('app', 'No results found, dont be shy, create first entry in the guest book')
-                ]); ?>
+            <table class="table">
+                <tr>
+                    <th>Author</th>
+                    <th>Content</th>
+                    <th>Date</th>
+                </tr>
+                <?php foreach ($models as $model): ?>
+                    <tr>
+                        <td><?= $model->getUsername() ?></td>
+                        <td><?= $model->getContent() ?></td>
+                        <td><?= $model->getCreatedAt() ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+            <?php (new Pager($paginator))->render() ?>
+            <hr/>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <form method="POST" action="/site/create">
+                    <input type="text" name="username" class="form-control" placeholder="username">
+                    <br/>
+                    <textarea type="text" name="content" class="form-control" placeholder="content"></textarea>
+                    <br/>
+                    <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Add new</button>
+                </form>
             </div>
         </div>
     </div>
-</div>
 
-<?php
-Pjax::end() ?>
+    <div class="b-example-divider mb-0"></div>
+</main>

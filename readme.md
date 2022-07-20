@@ -2,8 +2,15 @@
 
 * Create comments
 * Show comments (pagination)
-* Default pagination (10)
-* Database migrations: `./app/migrations/` (automated)
+* Default pagination (5)
+* Database schema: `./app/database/default.sql` (auto import)
+
+## Features
+
+- Configurable
+- Simple framework by Tomasz Jura
+- Doctrine ORM for managing DB connection
+- PHP 8.1 features
 
 ## Start project (development)
 

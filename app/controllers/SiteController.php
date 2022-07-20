@@ -2,64 +2,41 @@
 
 namespace app\controllers;
 
+use app\database\Paginator;
 use app\models\Post;
-use yii\data\ActiveDataProvider;
-use yii\filters\AccessControl;
-use yii\web\Controller;
+use app\prototypes\ControllerPrototype;
 
-class SiteController extends Controller
+class SiteController extends ControllerPrototype
 {
 
-    public function behaviors(): array
+    public function create(): string
     {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'actions' => ['index'],
-                        'allow' => true,
-                        'roles' => ['@', '?'],
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Displays posts with pagination.
-     *
-     * @return string
-     */
-    public function actionIndex(): string
-    {
-        $model = new Post();
-
-        $this->create(post: $model);
-
-        $dataProvider = new ActiveDataProvider(
-            [
-                'query' => Post::find()->defaultOrder(),
-                'pagination' => ['pageSize' => 5],
-            ],
-        );
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Post creation handler
-     * @param Post $post
-     * @return void
-     */
-    private function create(Post &$post): void
-    {
-        if ($post->load(\Yii::$app->request->post()) && $post->save()) {
-            $post = new Post();
+        if ($this->getPost(key: 'username') && $this->getPost(key: 'content')) {
+            $entity = new Post();
+            $entity->setUsername($this->getPost(key: 'username'));
+            $entity->setContent($this->getPost(key: 'content'));
+            $this->entityManager->persist(entity: $entity);
+            $this->entityManager->flush();
+            header(header: 'Location: /site/index');
+            exit();
         }
+
+        return $this->render(view: 'site/error');
+    }
+
+    public function index(): string
+    {
+        $repository = $this->entityManager->getRepository(entityName: Post::class);
+        $paginator = new Paginator(
+            entityRepository: $repository,
+            currentPage: $this->getParam(key: 'page', default: 0)
+        );
+        $elements = $paginator->getElements();
+
+        return $this->render(view: 'site/index', params: [
+            'models' => $elements,
+            'paginator' => $paginator
+        ]);
     }
 
 }

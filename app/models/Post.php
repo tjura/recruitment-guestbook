@@ -2,46 +2,95 @@
 
 namespace app\models;
 
-use app\queries\PostQuery;
-use Yii;
-use yii\db\ActiveRecord;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Table;
 
-/**
- * This is the model class for table "post".
- *
- * @property int $id
- * @property string $username
- * @property string $content
- * @property string $created_at
- */
-class Post extends ActiveRecord
+#[Entity]
+#[Table(name: 'post')]
+class Post
 {
-    public static function tableName(): string
+    #[Id()]
+    #[GeneratedValue()]
+    #[Column(type: Types::INTEGER, unique: true)]
+    private int $id;
+    #[Column(length: 255)]
+    private string $username;
+    #[Column(length: 255)]
+    private string $content;
+    #[Column(name: 'created_at', type: Types::STRING)]
+    private string $createdAt;
+
+    public function __construct()
     {
-        return 'post';
+        $this->createdAt = date('Y-m-d H:i:s');
     }
 
-    public static function find(): PostQuery
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
-        return new PostQuery(get_called_class());
+        return $this->id;
     }
 
-    public function rules(): array
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
     {
-        return [
-            [['username', 'content'], 'required'],
-            [['username'], 'string', 'max' => 255],
-            [['content'], 'string', 'max' => 512],
-        ];
+        $this->id = $id;
     }
 
-
-    public function attributeLabels(): array
+    /**
+     * @return string
+     */
+    public function getUsername(): string
     {
-        return [
-            'id' => Yii::t('app', 'ID'),
-            'username' => Yii::t('app', 'Username'),
-            'content' => Yii::t('app', 'Content'),
-        ];
+        return $this->username;
     }
+
+    /**
+     * @param string $username
+     */
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param string $content
+     */
+    public function setContent(string $content): void
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt(): string
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param string $createdAt
+     */
+    public function setCreatedAt(string $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
 }
