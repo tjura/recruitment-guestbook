@@ -12,6 +12,11 @@
 - Doctrine ORM for managing DB connection
 - PHP 8.1 features
 
+## For future
+
+- Build service for managing saving data
+- Front form widget with fields validation
+
 ## Start project (development)
 
 ```bash
